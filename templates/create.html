@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Add Substation{% endblock %}
+
+{% block content %}
+    <h1 class="mt-4">Add New Substation</h1>
+    <form action="{{ url_for('create') }}" method="post" class="mt-3">
+        <div class="mb-3">
+            <label for="substation_name" class="form-label">Substation Name</label>
+            <input type="text" name="substation_name" id="substation_name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="full_name" class="form-label">Full Name (Optional)</label>
+            <input type="text" name="full_name" id="full_name" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="p_number" class="form-label">P Number (Optional)</label>
+            <input type="text" name="p_number" id="p_number" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="breaker_name" class="form-label">Breaker Name</label>
+            <input type="text" name="breaker_name" id="breaker_name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="feeding_station_details" class="form-label">Feeding Station Details</label>
+            <input type="text" name="feeding_station_details" id="feeding_station_details" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="bay_name" class="form-label">Bay Name</label>
+            <input type="text" name="bay_name" id="bay_name" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Substation</button>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Substation List{% endblock %}
+
+{% block content %}
+    <h1 class="mt-4">Substations</h1>
+    
+    <!-- Search Form -->
+    <form class="form-inline mb-4" method="GET" action="{{ url_for('index') }}">
+        <div class="form-group mr-2">
+            <input type="text" class="form-control" name="substation_name" placeholder="Search by Substation Name" value="{{ request.args.get('substation_name', '') }}">
+        </div>
+        <div class="form-group mr-2">
+            <input type="text" class="form-control" name="breaker_name" placeholder="Search by Breaker Name" value="{{ request.args.get('breaker_name', '') }}">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary ml-2">Reset</a>
+    </form>
+
+    <a href="{{ url_for('create') }}" class="btn btn-primary mb-3">Add New Substation</a>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Sr No</th>
+                <th>Substation Name</th>
+                <th>Full Name</th>
+                <th>P Number</th>
+                <th>Breaker Name</th>
+                <th>Feeding Station Details</th>
+                <th>Bay Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for substation in substations %}
+            <tr>
+                <td>{{ substation.sr_no }}</td>
+                <td>{{ substation.substation_name }}</td>
+                <td>{{ substation.full_name }}</td>
+                <td>{{ substation.p_number }}</td>
+                <td>{{ substation.breaker_name }}</td>
+                <td>{{ substation.feeding_station_details }}</td>
+                <td>{{ substation.bay_name }}</td>
+                <td>
+                    <a href="{{ url_for('edit', sr_no=substation.sr_no) }}" class="btn btn-sm btn-warning">Edit</a>
+                    <form action="{{ url_for('delete', sr_no=substation.sr_no) }}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
