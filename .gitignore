@@ -1,0 +1,68 @@
+~$Bays allocation.xlsx
+Bays allocation.xlsx
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables file
+.env
+
+# Flask and Python virtual environment folders
+.venv/
+venv/
+ENV/
+env/
+
+# MacOS files
+.DS_Store
+
+# Pipenv and Virtualenv specific files
+Pipfile
+Pipfile.lock
+
+# Pytest cache directory
+.pytest_cache/
+
+# Coverage reports
+htmlcov/
+.coverage
+*.cover
+*.py,cover
+
+# Flask specific
+instance/
+instance/*
+
+# Database
+*.sqlite3
+*.db
+
+# Logs and debug files
+*.log
+*.pot
+*.pyc
+*.pyo
+
+# Static files generated during build or production
+/static/
+/media/
+/uploads/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Node.js dependency directories (if applicable)
+node_modules/
+
+# Build files
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# VS Code settings (optional, if using VS Code)
+.vscode/
+
+# IDE specific settings (optional)
+.idea/

@@ -1,0 +1,88 @@
+from flask import Flask, render_template, request, redirect, url_for
+import sqlite3
+
+app = Flask(__name__)
+
+def get_db_connection():
+    conn = sqlite3.connect('substations.db')
+    conn.row_factory = sqlite3.Row
+    return conn
+
+def init_db():
+    conn = get_db_connection()
+    conn.execute('''
+        CREATE TABLE IF NOT EXISTS substations (
+            sr_no INTEGER PRIMARY KEY AUTOINCREMENT,
+            substation_name TEXT NOT NULL,
+            full_name TEXT,  -- Nullable
+            p_number TEXT,   -- Nullable
+            breaker_name TEXT NOT NULL UNIQUE,  -- Unique constraint
+            feeding_station_details TEXT NOT NULL,
+            bay_name TEXT NOT NULL
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+@app.route('/')
+def index():
+    init_db()
+    conn = get_db_connection()
+    substations = conn.execute('SELECT * FROM substations').fetchall()
+    conn.close()
+    return render_template('index.html', substations=substations)
+
+@app.route('/create', methods=('GET', 'POST'))
+def create():
+    if request.method == 'POST':
+        substation_name = request.form['substation_name']
+        full_name = request.form['full_name']
+        p_number = request.form['p_number']
+        breaker_name = request.form['breaker_name']
+        feeding_station_details = request.form['feeding_station_details']
+        bay_name = request.form['bay_name']
+        conn = get_db_connection()
+        conn.execute('''
+            INSERT INTO substations (substation_name, full_name, p_number, breaker_name, feeding_station_details, bay_name)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ''', (substation_name, full_name, p_number, breaker_name, feeding_station_details, bay_name))
+        conn.commit()
+        conn.close()
+        return redirect(url_for('index'))
+    return render_template('create.html')
+
+
+@app.route('/<int:sr_no>/edit', methods=('GET', 'POST'))
+def edit(sr_no):
+    conn = get_db_connection()
+    substation = conn.execute('SELECT * FROM substations WHERE sr_no = ?', (sr_no,)).fetchone()
+    if request.method == 'POST':
+        substation_name = request.form['substation_name']
+        full_name = request.form['full_name']
+        p_number = request.form['p_number']
+        breaker_name = request.form['breaker_name']
+        feeding_station_details = request.form['feeding_station_details']
+        bay_name = request.form['bay_name']
+        conn.execute('''
+            UPDATE substations 
+            SET substation_name = ?, full_name = ?, p_number = ?, breaker_name = ?, feeding_station_details = ?, bay_name = ? 
+            WHERE sr_no = ?
+        ''', (substation_name, full_name, p_number, breaker_name, feeding_station_details, bay_name, sr_no))
+        conn.commit()
+        conn.close()
+        return redirect(url_for('index'))
+    conn.close()
+    return render_template('edit.html', substation=substation)
+
+@app.route('/<int:sr_no>/delete', methods=('POST',))
+def delete(sr_no):
+    conn = get_db_connection()
+    conn.execute('DELETE FROM substations WHERE sr_no = ?', (sr_no,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('index'))
+
+if __name__ == '__main__':
+    init_db()
+    print("Database initialized!")
+    app.run(debug = True)
