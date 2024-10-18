@@ -1,0 +1,97 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+    {% if substation %}
+        Edit Substation
+    {% else %}
+        Add Substation
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <h1 class="mt-4">
+        {% if substation %}
+            Edit Substation
+        {% else %}
+            Add New Substation
+        {% endif %}
+    </h1>
+
+    <form action="{{ url_for(action, sr_no=substation.sr_no) if substation else url_for(action) }}" method="POST">
+        <!-- Display form-level error message -->
+        {% if errors %}
+            <div class="alert alert-danger">
+                <ul>
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <!-- Substation Name (Required) -->
+        <div class="form-group">
+            <label for="substation_name">Substation Name</label>
+            <input type="text" class="form-control" id="substation_name" name="substation_name" 
+                   value="{{ substation.substation_name if substation else '' }}" required>
+            {% if 'substation_name' in field_errors %}
+                <small class="text-danger">{{ field_errors['substation_name'] }}</small>
+            {% endif %}
+        </div>
+
+        <!-- Full Name (Optional) -->
+        <div class="form-group">
+            <label for="full_name">Full Name (Optional)</label>
+            <input type="text" class="form-control" id="full_name" name="full_name" 
+                   value="{{ substation.full_name if substation else '' }}">
+        </div>
+
+        <!-- P Number (Optional) -->
+        <div class="form-group">
+            <label for="p_number">P Number (Optional)</label>
+            <input type="text" class="form-control" id="p_number" name="p_number" 
+                   value="{{ substation.p_number if substation else '' }}">
+        </div>
+
+        <!-- Breaker Name (Required) -->
+        <div class="form-group">
+            <label for="breaker_name">Breaker Name</label>
+            <input type="text" class="form-control" id="breaker_name" name="breaker_name" 
+                   value="{{ substation.breaker_name if substation else '' }}" required>
+            {% if 'breaker_name' in field_errors %}
+                <small class="text-danger">{{ field_errors['breaker_name'] }}</small>
+            {% endif %}
+        </div>
+
+        <!-- Feeding Station Details (Required) -->
+        <div class="form-group">
+            <label for="feeding_station_details">Feeding Station Details</label>
+            <input type="text" class="form-control" id="feeding_station_details" name="feeding_station_details" 
+                   value="{{ substation.feeding_station_details if substation else '' }}" required>
+            {% if 'feeding_station_details' in field_errors %}
+                <small class="text-danger">{{ field_errors['feeding_station_details'] }}</small>
+            {% endif %}
+        </div>
+
+        <!-- Bay Name (Required) -->
+        <div class="form-group">
+            <label for="bay_name">Bay Name</label>
+            <input type="text" class="form-control" id="bay_name" name="bay_name" 
+                   value="{{ substation.bay_name if substation else '' }}" required>
+            {% if 'bay_name' in field_errors %}
+                <small class="text-danger">{{ field_errors['bay_name'] }}</small>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            {% if substation %}
+                Update Substation
+            {% else %}
+                Add Substation
+            {% endif %}
+        </button>
+
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+{% endblock %}
