@@ -59,7 +59,7 @@ def create():
         bay_name = request.form['bay_name']
         
         if not substation_name or not breaker_name or not feeding_station_details or not bay_name:
-            flash('All required fields must be filled!', 'error')
+            flash('All required fields must be filled!', 'danger')
             return render_template('add_edit.html', substation=None, action='create')
 
         existing_substation = Substation.query.filter_by(breaker_name=breaker_name).first()
@@ -95,13 +95,13 @@ def edit(sr_no):
 
         # Server-side validation for empty fields
         if not substation_name or not breaker_name or not feeding_station_details or not bay_name:
-            flash('All required fields must be filled!', 'error')
+            flash('All required fields must be filled!', 'danger')
             return render_template('add_edit.html', substation=substation, action='edit')
 
         # Check for duplicate breaker_name (exclude the current substation)
         existing_substation = Substation.query.filter(Substation.breaker_name == breaker_name, Substation.sr_no != sr_no).first()
         if existing_substation:
-            flash('Breaker Name already exists! Please use a different one.', 'error')
+            flash('Breaker Name already exists! Please use a different one.', 'danger')
             return render_template('add_edit.html', substation=substation, action='edit')
 
         # Update substation details
